@@ -1,7 +1,7 @@
 export enum Attribute {
   'image' = 'image',
-  'utitle' = 'utitle',
-  'autor' = 'autor',
+  'songtitle' = 'songtitle',
+  'autorofsong' = 'autorofsong',
   'album' = 'album',
   'date_added' = 'date_added',
   'duration' = 'duration',
@@ -9,8 +9,8 @@ export enum Attribute {
 
 class Song extends HTMLElement {
   image?: string;
-  utitle?: string;
-  autor?: string;
+  songtitle?: string;
+  autorofsong?: string;
   album?: string;
   date_added?: number;
   duration?: number;
@@ -44,8 +44,8 @@ class Song extends HTMLElement {
               <link rel="stylesheet" href="./src/components/song/song.css">
               <section>
                   <img src="${this.image}" alt="Song image">
-                  <p><strong>Title:</strong> ${this.utitle}</p>
-                  <p><strong>Autor:</strong> ${this.autor}</p>
+                  <p><strong>Title:</strong> ${this.songtitle}</p>
+                  <p><strong>Autor:</strong> ${this.autorofsong}</p>
                   <p><strong>Album:</strong> ${this.album}</p>
                   <p><strong>Date Added:</strong> ${this.date_added}</p>
                   <p><strong>Duration:</strong> ${this.duration} mins</p>
@@ -60,5 +60,5 @@ class Song extends HTMLElement {
   }
 }
 
-customElements.define('song-component', Song);
+customElements.define('my-song', Song);
 export default Song;
