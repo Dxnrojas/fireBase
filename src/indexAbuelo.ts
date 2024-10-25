@@ -1,13 +1,14 @@
-import { Song } from '../src/types/song'
-import { addSongs } from './utils/Firebase';
+import { addSongs, getSongs } from './utils/Firebase';
+import Song, { Attribute } from './components/song/song';
+import { songTypes } from './types/song';
 
-const SongInfo: Song = {
-    uid: "",
-    image: "",
-    utitle: "",
-    autor: "",
-    album: "",
-    date_added: 0,
+
+const songInfo = {
+    image: '',
+    utitle: '',
+    autor: '',
+    album: '',
+    dateadded: 0,
     duration: 0,
 };
 
@@ -21,74 +22,127 @@ class AppContainer extends HTMLElement {
         this.render();
     }
 
+    // Funciones para manejar cambios en los inputs
     changeImage(e: any) {
-		SongInfo.image = e.target.value;
-	}
+        songInfo.image = e.target.value;
+    }
 
-	changeUtitle(e: any) {
-		SongInfo.utitle = e.target.value;
-	}
-    changeautor(e: any) {
-		SongInfo.autor = e.target.value;
-	}
+    changeUtitle(e: any) {
+        songInfo.utitle = e.target.value;
+    }
 
-    changealbum(e: any) {
-		SongInfo.album = e.target.value;
-	}
+    changeAutor(e: any) {
+        songInfo.autor = e.target.value;
+    }
+
+    changeAlbum(e: any) {
+        songInfo.album = e.target.value;
+    }
 
     changeDateadded(e: any) {
-		SongInfo.date_added = e.target.value;
-	}
+        songInfo.dateadded = e.target.value;
+    }
+
     changeDuration(e: any) {
-		SongInfo.duration = e.target.value;
-	}
+        songInfo.duration = e.target.value;
+    }
 
-	submitForm() {
-		console.log(SongInfo);
-        addSongs(SongInfo);
-	}
+    // Función para manejar el envío del formulario
+    submitForm() {
+        addSongs(songInfo); 
+        this.render();
+    }
 
+    // Render principal
     async render() {
         if (this.shadowRoot) {
+            // Limpiar contenido previo
+            this.shadowRoot.innerHTML = '';
+
+            // Crear el título del formulario
             const title = this.ownerDocument.createElement('h1');
-            title.textContent = 'Agrega tu cancion';
+            title.innerText = 'Sube tu canción';
             this.shadowRoot.appendChild(title);
 
-			const pImage = this.ownerDocument.createElement('input');
-			pImage.placeholder = 'Imagen';
-			pImage.addEventListener('change', this.changeImage);
-			this.shadowRoot.appendChild(pImage);
+            // Inputs para agregar los datos de la canción
+            const pImage = this.ownerDocument.createElement('input');
+            pImage.placeholder = 'Imagen';
+            pImage.addEventListener('change', this.changeImage.bind(this));
+            this.shadowRoot.appendChild(pImage);
 
-			const pUtitle = this.ownerDocument.createElement('input');
-			pUtitle.placeholder = 'Titulo de la canción';
-			pUtitle.addEventListener('change', this.changeUtitle);
-			this.shadowRoot.appendChild(pUtitle);
+            const pUtitle = this.ownerDocument.createElement('input');
+            pUtitle.placeholder = 'Nombre de la canción';
+            pUtitle.addEventListener('change', this.changeUtitle.bind(this));
+            this.shadowRoot.appendChild(pUtitle);
 
             const pAutor = this.ownerDocument.createElement('input');
-            pAutor.placeholder = 'Nombre del autor';
-            pAutor.addEventListener('change', this.changeautor);
-			this.shadowRoot.appendChild( pAutor );
+            pAutor.placeholder = 'Autor';
+            pAutor.addEventListener('change', this.changeAutor.bind(this));
+            this.shadowRoot.appendChild(pAutor);
 
             const pAlbum = this.ownerDocument.createElement('input');
-            pAlbum.placeholder = 'Nombre del album';
-            pAlbum.addEventListener('change', this.changealbum);
-			this.shadowRoot.appendChild( pAlbum );
+            pAlbum.placeholder = 'Album';
+            pAlbum.addEventListener('change', this.changeAlbum.bind(this));
+            this.shadowRoot.appendChild(pAlbum);
 
-            const pDateadded= this.ownerDocument.createElement('input');
+            const pDateadded = this.ownerDocument.createElement('input');
             pDateadded.placeholder = 'Fecha de adición';
-            pDateadded.addEventListener('change', this.changeDateadded);
-			this.shadowRoot.appendChild(  pDateadded );
+            pDateadded.addEventListener('change', this.changeDateadded.bind(this));
+            this.shadowRoot.appendChild(pDateadded);
 
             const pDuration = this.ownerDocument.createElement('input');
             pDuration.placeholder = 'Duración';
-            pDuration.addEventListener('change', this.changeDuration);
-			this.shadowRoot.appendChild(   pDuration );
+            pDuration.addEventListener('change', this.changeDuration.bind(this));
+            this.shadowRoot.appendChild(pDuration);
 
-			const save = this.ownerDocument.createElement('button');
-			save.innerText = 'Agregar Cancion';
-			save.addEventListener('click', this.submitForm);
-			this.shadowRoot.appendChild(save);
+            // Botón para enviar el formulario
+            const save = this.ownerDocument.createElement('button');
+            save.innerText = 'Añade tu canción';
+            save.addEventListener('click', this.submitForm.bind(this));
+            this.shadowRoot.appendChild(save);
+
+            // Obtener las canciones de Firebase
+            const songs = await getSongs();
+
+
+
+            // Mostrar cada canción en pantalla
+            songs?.forEach((song) => {
+                const container = this.ownerDocument.createElement('section');
+
+                // Crear un elemento de imagen
+                const img = this.ownerDocument.createElement('img');
+                img.src = song.image;  // Usamos 'src' para la imagen
+                container.appendChild(img);
+
+                // Crear un título para la canción
+                const title = this.ownerDocument.createElement('h1');
+                title.innerText = song.utitle; 
+                container.appendChild(title);
+
+                const autor = this.ownerDocument.createElement('p');
+                autor.innerText = song.autor;  
+                container.appendChild(autor);
+
+                const album = this.ownerDocument.createElement('p');
+                album.innerText = song.album;
+                container.appendChild(album);
+
+                const date_added = this.ownerDocument.createElement('p');
+                date_added.innerText = song.dateadded.toString();  
+                container.appendChild(date_added);
+
+                const duration = this.ownerDocument.createElement('p');
+                duration.innerText = song.duration.toString();  
+                container.appendChild(duration);
+
+                // Agregar el contenedor de la canción al shadowRoot
+                this.shadowRoot?.appendChild(container);
+            });
         }
     }
 }
-customElements.define("app-container", AppContainer)   
+
+// Definir el custom element
+customElements.define('app-container', AppContainer);
+export default AppContainer;

@@ -1,4 +1,4 @@
-export interface Song {
+export interface songTypes {
   uid?: string;
   image?: string;
   utitle?: string;
