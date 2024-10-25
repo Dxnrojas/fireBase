@@ -1,20 +1,18 @@
-import styles from './song.css'
-
 export enum Attribute {
   'image' = 'image',
-  'songtitle' = 'songtitle',
-  'autorofsong' = 'autorofsong',
+  'utitle' = 'utitle',
+  'autor' = 'autor',
   'album' = 'album',
-  'date_added' = 'date_added',
+  'dateadded' = 'dateadded',
   'duration' = 'duration',
 }
 
 class Song extends HTMLElement {
   image?: string;
-  songtitle?: string;
-  autorofsong?: string;
+  utitle?: string;
+  autor?: string;
   album?: string;
-  date_added?: number;
+  dateadded?: number;
   duration?: number;
 
   // Observa los cambios en estos atributos
@@ -25,8 +23,8 @@ class Song extends HTMLElement {
   // Maneja los cambios en los atributos
   attributeChangedCallback(propName: Attribute, oldValue: string | undefined, newValue: string | undefined) {
       switch (propName) {
-          case Attribute.date_added:
-              this.date_added = newValue ? Number(newValue) : undefined;
+          case Attribute.dateadded:
+              this.dateadded = newValue ? Number(newValue) : undefined;
               break;
           case Attribute.duration:
               this.duration = newValue ? Number(newValue) : undefined;
@@ -46,10 +44,10 @@ class Song extends HTMLElement {
               <link rel="stylesheet" href="./src/components/song/song.css">
               <section>
                   <img src="${this.image}" alt="Song image">
-                  <p><strong>Title:</strong> ${this.songtitle}</p>
-                  <p><strong>Autor:</strong> ${this.autorofsong}</p>
+                  <p><strong>Title:</strong> ${this.utitle}</p>
+                  <p><strong>Autor:</strong> ${this.autor}</p>
                   <p><strong>Album:</strong> ${this.album}</p>
-                  <p><strong>Date Added:</strong> ${this.date_added}</p>
+                  <p><strong>Date Added:</strong> ${this.dateadded}</p>
                   <p><strong>Duration:</strong> ${this.duration} mins</p>
               </section>
           `;
@@ -62,5 +60,5 @@ class Song extends HTMLElement {
   }
 }
 
-customElements.define('my-song', Song);
+customElements.define('song-component', Song);
 export default Song;
