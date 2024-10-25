@@ -24,36 +24,36 @@ const getFirestoreInstance = async () => {
     // Initialize Firebase
 
       const app = initializeApp(firebaseConfig);
-      db = getFirestore(app);
+      db = getFirestore(app); //Una funcion dentro de otra 
   }
 
 	return db;
 
 };
 
-export const addSongs = async (product: any) => {
+export const addSongs = async (product: any) => { //Metodo para anadir las canciones
 	try {
 		const db = await getFirestoreInstance();
 		const { collection, addDoc } = await import('firebase/firestore');
 
-		const where = collection(db, 'songs');
-		await addDoc(where, product);
+		const where = collection(db, 'songs');  //Anadir a la coleccion de songs porque no esta creada
+		await addDoc(where, product); //addDoc recibe dos parametros, donde y que quiero guardar
 		console.log('Se añadió con exito');
 	} catch (error) {
 		console.error('Error adding document', error);
 	}
 };
 
-export const getSongs = async () => {
+export const getSongs = async () => { //Metodo para traer las canciones o productos
 	try {
 		const db = await getFirestoreInstance();
 		const { collection, getDocs } = await import('firebase/firestore');
 
 		const where = collection(db, 'songs');
-		const querySnapshot = await getDocs(where);
+		const querySnapshot = await getDocs(where); //Firebase toma una foto de lo que hay en la coleccion y lo pinta, entonces quiero traer todos los documentos y le pongo en plural
 		const data: any[] = [];
 
-		querySnapshot.forEach((doc) => {
+		querySnapshot.forEach((doc) => { //Necesito retorar el arreglo pero con datos mas especificos como el documento o el contenido solamente por eso se crea un segundo arreglo para guardar esa data(contenido del doc)
 			data.push(doc.data());
 		});
 

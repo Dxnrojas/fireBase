@@ -17,6 +17,16 @@ class Song extends HTMLElement {
   dateadded?: number;
   duration?: number;
 
+  constructor() {
+    super();
+    this.attachShadow({ mode: 'open' });
+}
+
+
+  connectedCallback() {
+    this.render();
+}
+
   // Observa los cambios en estos atributos
   static get observedAttributes() {
       return Object.values(Attribute);
@@ -35,7 +45,6 @@ class Song extends HTMLElement {
               this[propName] = newValue;
               break;
       }
-      // Renderiza el componente cada vez que se actualicen los atributos
       this.render();
   }
 
@@ -44,24 +53,24 @@ class Song extends HTMLElement {
       if (this.shadowRoot) {
         
           this.shadowRoot.innerHTML = `
-              <style>${styles}</style>
-              <link rel="stylesheet" href="./src/components/song/song.css">
               <section class="song-card">
+
                   <img src="${this.image}" alt="Song image">
-                  <p><strong>Title:</strong> ${this.utitle}</p>
-                  <p><strong>Autor:</strong> ${this.autor}</p>
-                  <p><strong>Album:</strong> ${this.album}</p>
-                  <p><strong>Date Added:</strong> ${this.dateadded}</p>
-                  <p><strong>Duration:</strong> ${this.duration} mins</p>
+                  <p>Title: ${this.utitle}</p>
+                  <p>Autor: ${this.autor}</p>
+                  <p>Album: ${this.album}</p>
+                  <p>Date Added: ${this.dateadded}</p>
+                  <p>Duration: ${this.duration} mins</p>
               </section>
           `;
       }
+      
+      const cssCard = this.ownerDocument.createElement('style');
+      cssCard.innerHTML = styles;
+      this.shadowRoot?.appendChild(cssCard);
   }
 
-  connectedCallback() {
-      this.attachShadow({ mode: 'open' });
-      this.render();
-  }
+  
 }
 
 customElements.define('song-component', Song);

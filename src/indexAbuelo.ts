@@ -1,6 +1,7 @@
-import { addSongs, getSongs } from './utils/Firebase';
+import { addSongs, getSongs } from './utils/Firebase'; //Importar los dos metodos
 import Song, { Attribute } from './components/song/song';
 import { songTypes } from './types/song';
+import styles from './indexAbuelo.css';
 
 
 const songInfo = {
@@ -22,7 +23,7 @@ class AppContainer extends HTMLElement {
         this.render();
     }
 
-    // Funciones para manejar cambios en los inputs
+    // Se crean los metodos para que escuchen los cambios de los inputs
     changeImage(e: any) {
         songInfo.image = e.target.value;
     }
@@ -58,68 +59,61 @@ class AppContainer extends HTMLElement {
     async render() {
         if (this.shadowRoot) {
             
-             this.shadowRoot.innerHTML = `
-             <link rel="stylesheet" href="../dist/global.css"/>`
-            // Limpiar contenido previo
             this.shadowRoot.innerHTML = '';
 
-            // Crear el título del formulario
             const title = this.ownerDocument.createElement('h1');
-            title.innerText = 'Add your songs';
+            title.innerText = 'Añade tu canción';
             this.shadowRoot.appendChild(title);
 
-            // Inputs para agregar los datos de la canción
             const pImage = this.ownerDocument.createElement('input');
-            pImage.placeholder = 'Image of the song';
+            pImage.placeholder = 'Imagen';
             pImage.addEventListener('change', this.changeImage.bind(this));
             this.shadowRoot.appendChild(pImage);
 
             const pUtitle = this.ownerDocument.createElement('input');
-            pUtitle.placeholder = 'Name of the song';
+            pUtitle.placeholder = 'Nombre de la canción';
             pUtitle.addEventListener('change', this.changeUtitle.bind(this));
             this.shadowRoot.appendChild(pUtitle);
 
             const pAutor = this.ownerDocument.createElement('input');
-            pAutor.placeholder = 'Name of the autor';
+            pAutor.placeholder = 'Autor';
             pAutor.addEventListener('change', this.changeAutor.bind(this));
             this.shadowRoot.appendChild(pAutor);
 
             const pAlbum = this.ownerDocument.createElement('input');
-            pAlbum.placeholder = 'Name of the album';
+            pAlbum.placeholder = 'Álbum';
             pAlbum.addEventListener('change', this.changeAlbum.bind(this));
             this.shadowRoot.appendChild(pAlbum);
 
             const pDateadded = this.ownerDocument.createElement('input');
-            pDateadded.placeholder = 'Date';
+            pDateadded.placeholder = 'Fecha de adición';
             pDateadded.addEventListener('change', this.changeDateadded.bind(this));
             this.shadowRoot.appendChild(pDateadded);
 
             const pDuration = this.ownerDocument.createElement('input');
-            pDuration.placeholder = 'Duration of the song';
+            pDuration.placeholder = 'Duración';
             pDuration.addEventListener('change', this.changeDuration.bind(this));
             this.shadowRoot.appendChild(pDuration);
 
             // Botón para enviar el formulario
             const save = this.ownerDocument.createElement('button');
-            save.innerText = 'Send Song';
+            save.innerText = 'Añade tu canción';
             save.addEventListener('click', this.submitForm.bind(this));
             this.shadowRoot.appendChild(save);
 
-            // Obtener las canciones de Firebase
+            // Se obtienen las canciones de Firebase de la función que se creo e el utils para traerlo
             const songs = await getSongs();
 
 
-
-            // Mostrar cada canción en pantalla
+            // Hacer un foreach para pintar cada una de las canciones que estan en el firebase
             songs?.forEach((song) => {
                 const container = this.ownerDocument.createElement('section');
 
-                // Crear un elemento de imagen
+                // Imagen
                 const img = this.ownerDocument.createElement('img');
-                img.src = song.image;  // Usamos 'src' para la imagen
+                img.src = song.image;  
                 container.appendChild(img);
 
-                // Crear un título para la canción
                 const title = this.ownerDocument.createElement('h1');
                 title.innerText = song.utitle; 
                 container.appendChild(title);
@@ -140,13 +134,14 @@ class AppContainer extends HTMLElement {
                 duration.innerText = song.duration.toString();  
                 container.appendChild(duration);
 
-                // Agregar el contenedor de la canción al shadowRoot
                 this.shadowRoot?.appendChild(container);
             });
         }
+        const cssCard = this.ownerDocument.createElement('style');
+      cssCard.innerHTML = styles;
+      this.shadowRoot?.appendChild(cssCard);
     }
 }
 
-// Definir el custom element
 customElements.define('app-container', AppContainer);
 export default AppContainer;
