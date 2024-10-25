@@ -1,3 +1,5 @@
+import styles from './song.css'
+
 export enum Attribute {
   'image' = 'image',
   'songtitle' = 'songtitle',
