@@ -57,6 +57,9 @@ class AppContainer extends HTMLElement {
     // Render principal
     async render() {
         if (this.shadowRoot) {
+            
+             this.shadowRoot.innerHTML = `
+             <link rel="stylesheet" href="../dist/global.css"/>`
             // Limpiar contenido previo
             this.shadowRoot.innerHTML = '';
 

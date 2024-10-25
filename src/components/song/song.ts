@@ -1,3 +1,5 @@
+import styles from './song.css';
+
 export enum Attribute {
   'image' = 'image',
   'utitle' = 'utitle',
@@ -40,7 +42,9 @@ class Song extends HTMLElement {
   // Método que renderiza el componente
   render() {
       if (this.shadowRoot) {
+        
           this.shadowRoot.innerHTML = `
+              <style>${styles}</style>
               <link rel="stylesheet" href="./src/components/song/song.css">
               <section class="song-card">
                   <img src="${this.image}" alt="Song image">
