@@ -42,7 +42,7 @@ class Song extends HTMLElement {
       if (this.shadowRoot) {
           this.shadowRoot.innerHTML = `
               <link rel="stylesheet" href="./src/components/song/song.css">
-              <section>
+              <section class="song-card">
                   <img src="${this.image}" alt="Song image">
                   <p><strong>Title:</strong> ${this.utitle}</p>
                   <p><strong>Autor:</strong> ${this.autor}</p>
